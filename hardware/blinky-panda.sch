@@ -499,45 +499,27 @@ Connection ~ 4100 7150
 Wire Wire Line
 	3400 3050 3700 3050
 Wire Wire Line
-	3400 3050 3400 3600
-Wire Wire Line
-	3700 4200 3400 4200
-Wire Wire Line
-	3400 4200 3400 3700
-Wire Wire Line
-	3300 3800 3300 5400
-Wire Wire Line
-	3300 5400 3700 5400
-Wire Wire Line
-	3200 3900 3200 6550
-Wire Wire Line
-	3200 6550 3700 6550
-Wire Wire Line
-	3100 4000 3100 6800
+	2900 4000 2900 6800
 Wire Wire Line
 	3100 7750 3700 7750
-Text Label 2400 3600 0    50   ~ 0
+Text Label 2300 3600 0    50   ~ 0
 row0
-Text Label 2400 3700 0    50   ~ 0
+Text Label 2300 3700 0    50   ~ 0
 row1
-Text Label 2400 3800 0    50   ~ 0
+Text Label 2300 3800 0    50   ~ 0
 row2
-Text Label 2400 3900 0    50   ~ 0
+Text Label 2300 4500 0    50   ~ 0
 row3
-Text Label 2400 4000 0    50   ~ 0
+Text Label 2300 4600 0    50   ~ 0
 row4
 Wire Wire Line
 	6550 3050 6550 4200
 Wire Wire Line
 	6550 8000 3000 8000
 Wire Wire Line
-	3000 8000 3000 6600
-Wire Wire Line
 	4500 3050 6550 3050
 Wire Wire Line
 	6750 8150 2900 8150
-Wire Wire Line
-	2900 8150 2900 6700
 Wire Wire Line
 	4950 2850 6750 2850
 Wire Wire Line
@@ -547,32 +529,26 @@ Wire Wire Line
 Wire Wire Line
 	6950 8350 2800 8350
 Wire Wire Line
-	2800 8350 2800 4300
-Wire Wire Line
 	5850 2450 7150 2450
 Wire Wire Line
 	7150 2450 7150 3600
 Wire Wire Line
 	7150 8500 2700 8500
 Wire Wire Line
-	2700 8500 2700 4500
-Wire Wire Line
 	6300 2250 7350 2250
 Wire Wire Line
 	7350 2250 7350 3400
 Wire Wire Line
 	7350 8650 2600 8650
-Wire Wire Line
-	2600 8650 2600 4600
-Text Label 2400 4100 0    50   ~ 0
+Text Label 2300 4300 0    50   ~ 0
 col4
-Text Label 2400 4200 0    50   ~ 0
+Text Label 2300 4200 0    50   ~ 0
 col3
-Text Label 2400 4300 0    50   ~ 0
+Text Label 2300 4100 0    50   ~ 0
 col2
-Text Label 2400 4500 0    50   ~ 0
+Text Label 2300 4000 0    50   ~ 0
 col1
-Text Label 2400 4600 0    50   ~ 0
+Text Label 2300 3900 0    50   ~ 0
 col0
 Wire Wire Line
 	6300 3400 7350 3400
@@ -716,20 +692,15 @@ sw
 Text Label 2350 6900 0    50   ~ 0
 rst
 Wire Wire Line
-	2300 6600 3000 6600
-Connection ~ 3000 6600
+	2300 6600 2800 6600
 Wire Wire Line
-	3000 6600 3000 4100
+	2800 6600 2800 4100
 Wire Wire Line
-	2300 6700 2900 6700
-Connection ~ 2900 6700
+	2300 6700 2700 6700
 Wire Wire Line
-	2900 6700 2900 4200
+	2700 6700 2700 4200
 Wire Wire Line
-	2300 6800 3100 6800
-Connection ~ 3100 6800
-Wire Wire Line
-	3100 6800 3100 7750
+	2300 6800 2900 6800
 $Comp
 L MCU_Microchip_ATtiny:ATtiny84A-PU U1
 U 1 1 6037B303
@@ -748,19 +719,13 @@ Wire Wire Line
 Wire Wire Line
 	2200 3800 3300 3800
 Wire Wire Line
-	2200 3900 3200 3900
+	2200 3900 3000 3900
 Wire Wire Line
-	2200 4000 3100 4000
+	2200 4000 2900 4000
 Wire Wire Line
-	2200 4100 3000 4100
+	2200 4100 2800 4100
 Wire Wire Line
-	2200 4200 2900 4200
-Wire Wire Line
-	2200 4300 2800 4300
-Wire Wire Line
-	2200 4500 2700 4500
-Wire Wire Line
-	2200 4600 2600 4600
+	2200 4200 2700 4200
 Wire Wire Line
 	2400 4700 2200 4700
 Wire Wire Line
@@ -845,4 +810,39 @@ F 3 "" H 1600 3100 50  0001 C CNN
 	1    1600 3100
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	2600 8650 2600 4300
+Wire Wire Line
+	2200 4300 2600 4300
+Wire Wire Line
+	2700 8500 2700 6700
+Connection ~ 2700 6700
+Wire Wire Line
+	2800 8350 2800 6600
+Connection ~ 2800 6600
+Wire Wire Line
+	2900 8150 2900 6800
+Connection ~ 2900 6800
+Wire Wire Line
+	3000 3900 3000 8000
+Wire Wire Line
+	3400 3050 3400 3600
+Wire Wire Line
+	3400 3700 3400 4200
+Wire Wire Line
+	3400 4200 3700 4200
+Wire Wire Line
+	3300 3800 3300 5400
+Wire Wire Line
+	3300 5400 3700 5400
+Wire Wire Line
+	3200 4500 3200 6550
+Wire Wire Line
+	3200 6550 3700 6550
+Wire Wire Line
+	2200 4500 3200 4500
+Wire Wire Line
+	3100 4600 3100 7750
+Wire Wire Line
+	2200 4600 3100 4600
 $EndSCHEMATC
