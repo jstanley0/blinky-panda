@@ -1,3 +1,4 @@
-hardware/gerber
+*.elf
+*.hex
+*.o
 .DS_Store
-hardware/fp-info-cache
