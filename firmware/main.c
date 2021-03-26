@@ -32,11 +32,13 @@ int main(void)
       PORTB &= 0b11111100;
       for(uint8_t row = 0; row < 3; ++row) {
         PORTA |= (1 << row);
-        _delay_ms(100);
+        _delay_ms(20);
+        PORTA ^= (1 << row);
       }
       for(uint8_t row = 3; row < 5; ++row) {
         PORTB |= (1 << (row - 3));
-        _delay_ms(100);
+        _delay_ms(20);
+        PORTB ^= (1 << (row - 3));
       }
     }
   }
