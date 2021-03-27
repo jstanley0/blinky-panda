@@ -69,15 +69,14 @@ ISR(TIM0_OVF_vect)
 
     } else {
         // turn off rows
-        if (framebuf[base] == count) ROW_0_OFF();
-        if (framebuf[base+1] == count) ROW_1_OFF();
-        if (framebuf[base+2] == count) ROW_2_OFF();
-        if (framebuf[base+3] == count) ROW_3_OFF();
-        if (framebuf[base+4] == count) ROW_4_OFF();
+        if (count >= framebuf[base]) ROW_0_OFF();
+        if (count >= framebuf[base+1]) ROW_1_OFF();
+        if (count >= framebuf[base+2]) ROW_2_OFF();
+        if (count >= framebuf[base+3]) ROW_3_OFF();
+        if (count >= framebuf[base+4]) ROW_4_OFF();
     }
 
-    if (++count == 25)
-        count = 0;
+    count = (count + 1) & 0x3F;
 }
 
 int main(void)
@@ -87,16 +86,19 @@ int main(void)
 
   sei();
 
-  uint8_t j = 0;
+  int8_t i = 0, j = 7;
   for(;;) {
-    for(uint8_t i = 0; i < 25; ++i) {
-      uint8_t k = i + j;
-      if (k > 25) k -= 25;  // fake modulo
-      framebuf[i] = 25 - k;
-    }
-    if (++j == 25)
-      j = 0;
+    framebuf[i] += 31;
+    framebuf[j] += 31;
     _delay_ms(20);
+    for(uint8_t k = 0; k < 25; ++k) {
+      framebuf[k] >>= 1;
+    }
+    if (++i >= 25)
+      i = 0;
+    if (i & 1) {
+      if (--j < 0)
+        j = 24;
+    }
   }
-
 }
