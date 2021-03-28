@@ -86,13 +86,14 @@ int main(void)
 
   sei();
 
-  int8_t i = 0, j = 7;
+  int8_t i = 0, j = 7, k = 15;
   for(;;) {
-    framebuf[i] += 31;
-    framebuf[j] += 31;
+    framebuf[i] = 63;
+    framebuf[j] = 63;
+    framebuf[k] = 63;
     _delay_ms(20);
-    for(uint8_t k = 0; k < 25; ++k) {
-      framebuf[k] >>= 1;
+    for(uint8_t z = 0; z < 25; ++z) {
+      framebuf[z] >>= 1;
     }
     if (++i >= 25)
       i = 0;
@@ -100,5 +101,7 @@ int main(void)
       if (--j < 0)
         j = 24;
     }
+    if (++k >= 25)
+      k = 0;
   }
 }
