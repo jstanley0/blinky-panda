@@ -7,12 +7,16 @@
 // PB0..PB1 -> row3..row4 anodes
 // PB2      -> tactile switch
 
+// amount of time to spend on a single pattern, in milliseconds
+// (note this is an unsigned 16-bit value)
+#define PATTERN_MS 10000
+
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
-#include <string.h>
+#include <stdlib.h>
 
 #define COL_ON(col) PORTA = 0b11111000 ^ (0b1000 << col); PORTB &= 0b11111100
 
@@ -28,6 +32,8 @@
 #define ROW_3_OFF() PORTB &= ~1
 #define ROW_4_ON() PORTB |= 0b10
 #define ROW_4_OFF() PORTB &= ~0b10
+
+#define BUTTON_STATE() (PINB & (1 << PB2))
 
 void init_io()
 {
@@ -79,22 +85,54 @@ ISR(TIM0_OVF_vect)
     count = (count + 1) & 0x3F;
 }
 
-int main(void)
+void fade_out()
 {
-  init_io();
-  init_timer();
+    for(uint8_t i = 0; i < 6; ++i) {
+        for(uint8_t j = 0; j < 25; ++j) {
+            framebuf[j] >>= 1;
+        }
+        _delay_ms(10);
+    }
+}
 
-  sei();
+int update()
+{
+    static uint16_t pattern_ms = 0;
 
-  int8_t i = 0, j = 7, k = 15;
+    uint8_t pre = BUTTON_STATE();
+    _delay_ms(25);  // <- must be a compile-time constant
+    pattern_ms += 25;
+
+    // switch to the next pattern if the time limit on this one has been exceeded or the button has been pressed
+    if ((pattern_ms >= PATTERN_MS) || (BUTTON_STATE() && !pre)) {
+        pattern_ms = 0;
+        fade_out();
+        return 1;
+    }
+
+    return 0;
+}
+
+int fade()
+{
+    if (update())
+        return 1;
+
+    for(uint8_t z = 0; z < 25; ++z) {
+        framebuf[z] >>= 1;
+    }
+    return 0;
+}
+
+void chase3()
+{
+  int8_t i = 0, j = rand() % 25, k = 13;
   for(;;) {
     framebuf[i] = 63;
-    framebuf[j] = 63;
+    framebuf[j] = 127;
     framebuf[k] = 63;
-    _delay_ms(20);
-    for(uint8_t z = 0; z < 25; ++z) {
-      framebuf[z] >>= 1;
-    }
+    if (fade())
+        break;
     if (++i >= 25)
       i = 0;
     if (i & 1) {
@@ -104,4 +142,92 @@ int main(void)
     if (++k >= 25)
       k = 0;
   }
+}
+
+void raindrops()
+{
+  for(;;) {
+    for(int8_t i = 0; i < 3; ++i) {
+        framebuf[rand() % 25] = 255;
+    }
+    if (fade())
+        break;
+  }
+}
+
+void shimmer()
+{
+    uint8_t i = 0;
+    for(;;) {
+        for(int8_t j = i; j < 25; j += 5) {
+            framebuf[j] = 255;
+        }
+        if (fade())
+            return;
+        if (++i == 5)
+            i = 0;
+    }
+}
+
+void cycle()
+{
+    uint8_t i = 0, j = 0;
+    for(;;) {
+        for(int8_t j = i; j < 25; j += 5) {
+            framebuf[j] = 63;
+        }
+        if (fade())
+            return;
+        if (++j == 2) {
+            j = 0;
+            if (++i == 5)
+                i = 0;
+        }
+    }
+}
+
+void sparkle()
+{
+    for(;;)
+    {
+        for(int8_t i = 1; i < 64; i <<= 1) {
+            for(int8_t j = 0; j < 25; ++j) {
+                framebuf[j] = i;
+            }
+            if (update())
+                return;
+        }
+
+        for(int8_t i = 63; i >= 0; --i) {
+            for(int8_t j = 0; j < 25; ++j) {
+                framebuf[j] = i;
+            }
+            framebuf[rand() % 25] = 63;
+            if (fade())
+                return;
+        }
+
+        for(int8_t i = 0; i < 10; ++i) {
+            framebuf[rand() % 25] = 63;
+                if (fade())
+                    return;
+        }
+    }
+}
+
+int main(void)
+{
+  init_io();
+  init_timer();
+
+  sei();
+
+  for(;;) {
+    chase3();
+    shimmer();
+    raindrops();
+    cycle();
+    sparkle();
+  }
+
 }
